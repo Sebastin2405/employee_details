@@ -62,6 +62,8 @@
                                 <mat-form-field class="demo-full-width w-100">
                                     <mat-label>Phone</mat-label>
                                     <input matInput formControlName="phone" autocomplete="off" maxlength="10">
+                                    <mat-error *ngIf="hasPhoneError(i, 'required')">Phone is required</mat-error>
+                                    <mat-error *ngIf="hasPhoneError(i, 'maxlength')">Phone number cannot exceed 10 digits</mat-error>        
                                 </mat-form-field>
                             </div>
                             <div class="col-lg-2 col-md-2">
@@ -84,7 +86,7 @@
                 </div>
                 <div class="button-submit">
                     <div class="d-flex justify-content-end user-signup align-items-center">
-                        <button type="button" (click)="save()" mat-button class="button-color-blue" [ngClass]="{'disabled-button': EmployeeForm.invalid}" [disabled]="EmployeeForm.invalid"> Submit </button>
+                        <button type="button" (click)="save()" mat-button class="button-color-blue" > Submit </button>
                     </div>
                 </div>
             </form>

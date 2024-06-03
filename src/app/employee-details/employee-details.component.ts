@@ -33,6 +33,10 @@ export class EmployeeDetailsComponent implements OnInit {
   public hasError = (controlName: string, errorName: string) => {
     return this.EmployeeForm.controls[controlName].hasError(errorName);
   }
+  public hasPhoneError(index: number, errorName: string) {
+    return (this.EmployeeForm?.get('phoneArray') as FormArray)?.at(index)?.get('phone')?.hasError(errorName);
+  }
+
 
   private itemsformGroup(): FormGroup {
     return this.formBuilder.group({
@@ -56,6 +60,7 @@ export class EmployeeDetailsComponent implements OnInit {
   }
   save() {
     if (this.EmployeeForm.invalid) {
+      this.markFormGroupTouched(this.EmployeeForm);
       return;
     }
     const savedData = localStorage.getItem('employeeData');
@@ -69,6 +74,15 @@ export class EmployeeDetailsComponent implements OnInit {
     localStorage.setItem('employeeData', JSON.stringify(dataArray));
     this.EmployeeForm.reset();
     this.router.navigate(['/employee-list']);
+  }
+
+  private markFormGroupTouched(formGroup: FormGroup) {
+    (Object as any).values(formGroup.controls).forEach((control: any) => {
+      control.markAsTouched();
+      if (control.controls) {
+        this.markFormGroupTouched(control);
+      }
+    });
   }
 
 }
